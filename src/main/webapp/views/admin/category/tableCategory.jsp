@@ -14,10 +14,18 @@
         Vui Lòng Thêm Mới Dữ Liệu
     </p>
 </c:if>
-<%--<c:if test="${!empty list}">--%>
-<%--    <p class="alert alert-success">--%>
-<%--        Data OK 1--%>
-<%--    </p>--%>
+<c:if test="${!empty sessionScope.error}">
+    <div class="alert alert-danger">
+            ${sessionScope.error}
+    </div>
+    <c:remove var="error" scope="session"/>
+</c:if>
+<c:if test="${!empty sessionScope.message}">
+    <div class="alert alert-success">
+            ${sessionScope.message}
+    </div>
+    <c:remove var="message" scope="session"/>
+</c:if>
 <table class="table table-success table-striped">
     <thead>
     <tr>
@@ -30,7 +38,6 @@
     <tbody>
     <c:forEach items="${list}" var="category">
         <tr>
-                <%--                <td>${category.id}</td>--%>
             <td>${category.ten}</td>
             <td>${category.user.hoTen}</td>
             <td><fmt:formatDate value="${category.ngayTao}" pattern="dd/MM/yyyy"/></td>
@@ -41,36 +48,35 @@
                 </form>
             </td>
             <td>
-                <form action="deleteCategory" method="post">
-                    <input type="hidden" value="${category.id}" name="id">
-                    <button class="btn btn-danger">Delete</button>
-                </form>
+                <button data-toggle="modal" data-target="#b${category.id}" class="btn btn-danger">Delete</button>
             </td>
+            <div id="b${category.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn xóa danh mục ${category.ten} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="deleteCategory" method="post">
+                                <input type="hidden" value="${category.id}" name="id">
+                                <button class="btn btn-danger">Xóa</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 <%--</c:if>--%>
-<%--<div id="exampleModal" class="modal" tabindex="-1">--%>
-<%--    <div class="modal-dialog">--%>
-<%--        <div class="modal-content">--%>
-<%--            <div class="modal-header">--%>
-<%--                <h3 class="modal-title">Xác nhận</h3>--%>
-<%--                <button type="button" class="btn-close" data-bs-dismiss="modal"--%>
-<%--                        aria-label="Close"></button>--%>
-<%--            </div>--%>
-<%--            <div class="modal-body">--%>
-<%--                <h5>Bạn có muốn xóa Category này?</h5>--%>
-<%--            </div>--%>
-<%--            <div class="modal-footer">--%>
-<%--                <form method="get" action="/deleteCategory?id=${category.id}">--%>
-<%--                    <button type="submit">Continue</button>--%>
-<%--                </form>--%>
-<%--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"--%>
-<%--                        aria-label="Close">Hủy--%>
-<%--                </button>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
+
 

@@ -14,11 +14,8 @@ public class Product {
     @Column(name = "ten", nullable = false)
     private String ten;
 
-    @Column(name = "so_luong", nullable = false)
-    private Integer soLuong;
-
     @Column(name = "don_gia", nullable = false)
-    private Integer donGia;
+    private Double donGia;
 
     @Column(name = "mau_sac", nullable = false)
     private String mauSac;
@@ -35,6 +32,17 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    private List<Orderdetail> orderdetailList;
+
+    public List<Orderdetail> getOrderdetailList() {
+        return orderdetailList;
+    }
+
+    public void setOrderdetailList(List<Orderdetail> orderdetailList) {
+        this.orderdetailList = orderdetailList;
+    }
 
     public Category getCategory() {
         return category;
@@ -68,20 +76,12 @@ public class Product {
         this.mauSac = mauSac;
     }
 
-    public Integer getDonGia() {
+    public Double getDonGia() {
         return donGia;
     }
 
-    public void setDonGia(Integer donGia) {
+    public void setDonGia(Double donGia) {
         this.donGia = donGia;
-    }
-
-    public Integer getSoLuong() {
-        return soLuong;
-    }
-
-    public void setSoLuong(Integer soLuong) {
-        this.soLuong = soLuong;
     }
 
     public String getTen() {
@@ -107,4 +107,5 @@ public class Product {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
 }

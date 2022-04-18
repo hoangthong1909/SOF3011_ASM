@@ -12,7 +12,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4 offset-5">
     <h1 class="h3 mb-0 text-gray-800">Account Management</h1>
 </div>
-<form class=" row mt-3 ms-0 pe-0" action="store" method="post">
+<form class=" row mt-3 ms-0 pe-0" action="store" method="post" enctype="multipart/form-data">
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Name</label>
         <input type="text" class="form-control" name="hoTen">
@@ -32,6 +32,10 @@
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Password</label>
         <input type="password" class="form-control" name="password">
+    </div>
+    <div class="mb-3 col-6">
+        <label class="form-label fw-bold">Avatar</label>
+        <input type="file" class="form-control" name="avatar">
     </div>
     <div class=" p-3 mt-4 col-6">
         <label class="form-label fw-bold pe-4 me-3">Gender</label>

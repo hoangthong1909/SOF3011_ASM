@@ -10,35 +10,34 @@ public class Orderdetail {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "id_order", nullable = false)
-    private Integer idOrder;
-
-    @Column(name = "product_id", nullable = false)
-    private Integer productId;
+    @Column(name = "don_gia", nullable = false)
+    private Double donGia;
 
     @Column(name = "so_luong", nullable = false)
     private Integer soLuong;
 
-    @Column(name = "don_gia", nullable = false)
-    private Integer donGia;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    @Column(name = "status", nullable = false)
-    private Boolean status = false;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    public Boolean getStatus() {
-        return status;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public Integer getDonGia() {
-        return donGia;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setDonGia(Integer donGia) {
-        this.donGia = donGia;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getSoLuong() {
@@ -49,21 +48,14 @@ public class Orderdetail {
         this.soLuong = soLuong;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Double getDonGia() {
+        return donGia;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setDonGia(Double donGia) {
+        this.donGia = donGia;
     }
 
-    public Integer getIdOrder() {
-        return idOrder;
-    }
-
-    public void setIdOrder(Integer idOrder) {
-        this.idOrder = idOrder;
-    }
 
     public Integer getId() {
         return id;

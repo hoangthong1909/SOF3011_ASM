@@ -52,4 +52,11 @@ public class ProductDAO {
         Product entity=this.em.find(Product.class,id);
         return entity;
     }
+    public List<Product> findByIDCategory(int id){
+        String jpql="SELECT obj from Product obj where obj.category.id= :id AND obj.status=true ";
+        TypedQuery<Product> query =this.em.createQuery(jpql,Product.class);
+        query.setParameter("id",id);
+        List<Product> list=query.getResultList();
+        return list;
+    }
 }

@@ -18,18 +18,9 @@
         <label class="form-label fw-bold">Name</label>
         <input type="text" class="form-control" name="ten">
     </div>
-    <div class="mb-3 col-12">
-        <label class="form-label fw-bold" >Người tạo</label>
-        <select name="user_id">
-            <c:forEach items="${ dsUser }" var="user">
-                <option value="${ user.id }">
-                        ${ user.hoTen }
-                </option>
-            </c:forEach>
-        </select>
-    </div>
+    <input type="hidden" value="${user.id}" name="user_id">
     <div class="mt-3">
-        <button  class="btn btn-success">ADD</button>
+        <button  class="btn btn-success">Thêm</button>
         <button type="reset" class="btn btn-primary">Làm mới</button>
     </div>
 </form>

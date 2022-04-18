@@ -12,20 +12,14 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4 offset-5">
     <h1 class="h3 mb-0 text-gray-800">Product Management</h1>
 </div>
-<form class=" row mt-3 ms-0 pe-0" action="updateProduct?id=${product.id}" method="post">
+<form class=" row mt-3 ms-0 pe-0" action="updateProduct?id=${product.id}" method="post" enctype="multipart/form-data">
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Category</label>
         <select  class="form-select" name="category_id">
             <c:forEach items="${ dsCategory }" var="category">
-                <option  value="${ category.id }">
-                        ${ product.category.ten }
-<%--                        ${ category.ten }--%>
+                <option ${product.category.id==category.id ? "selected":""} value="${category.id}">
+                        ${category.ten}
                 </option>
-<%--                <c:if test="${i>0}">--%>
-<%--                    <option value="${ product.id }">--%>
-<%--                            ${ product.category.ten }--%>
-<%--                    </option>--%>
-<%--                </c:if>--%>
             </c:forEach>
         </select>
     </div>
@@ -35,12 +29,8 @@
         <input type="text" class="form-control" name="ten" value="${product.ten}">
     </div>
     <div class="mb-3 col-6">
-        <label class="form-label fw-bold">Quantity</label>
-        <input type="text" class="form-control" name="soLuong" value="${product.soLuong}">
-    </div>
-    <div class="mb-3 col-6">
         <label class="form-label fw-bold">Price</label>
-        <input type="text" class="form-control" name="donGia" value="${product.soLuong}">
+        <input type="text" class="form-control" name="donGia" value="${product.donGia}">
     </div>
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Color</label>
@@ -52,7 +42,7 @@
     </div>
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Image</label>
-        <input type="text" class="form-control" name="img" value="${product.img}">
+        <input type="file" class="form-control" name="img" value="${product.img}">
     </div>
     <div class="mt-3">
         <button class="btn btn-success">Update</button>

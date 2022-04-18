@@ -2,16 +2,18 @@ package controller.admin;
 
 import DAO.UserDao;
 import JPAUtils.EncryptUtil;
+import JPAUtils.FileUtil;
 import entity.User;
 import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+@MultipartConfig
 @WebServlet({"/store", "/edit", "/update", "/delete", "/User"})
 public class UserServlet extends HttpServlet {
     private UserDao dao;
@@ -22,6 +24,8 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         String uri = request.getRequestURI();
         if (uri.contains("User")) {
             this.create(request, response);
@@ -30,6 +34,8 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         String uri = request.getRequestURI();
         if (uri.contains("store")) {
             this.store(request, response);
@@ -52,23 +58,34 @@ public class UserServlet extends HttpServlet {
 
 
     protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String s = request.getParameter("id");
         try {
             int id = Integer.parseInt(s);
             User before = this.dao.findByID(id);
             User entity = new User();
             BeanUtils.populate(entity, request.getParameterMap());
+            File file = FileUtil.saveFileUpload("avatar", request.getPart("avatar"));
+            if (file.getName().equals("avatar")) {
+                entity.setAvatar(before.getAvatar());
+            } else {
+                entity.setAvatar(file.getName());
+            }
             entity.setPassword(before.getPassword());
+            entity.setNguoiDung(before.getNguoiDung());
             entity.setStatus(before.getStatus());
             this.dao.update(entity);
+            session.setAttribute("message","Cập Nhật Thành Công");
             response.sendRedirect("/User");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/edit");
+            session.setAttribute("error","Cập Nhật Thất Bại");
+            response.sendRedirect("/User");
         }
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String s = request.getParameter("id");
         try {
             int id = Integer.parseInt(s);
@@ -76,10 +93,12 @@ public class UserServlet extends HttpServlet {
             BeanUtils.populate(entity, request.getParameterMap());
             entity.setStatus(false);
             this.dao.update(entity);
+            session.setAttribute("message","Xóa Thành Công");
             response.sendRedirect("/User");
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/delete");
+            session.setAttribute("error","Xóa Thất Bại");
+            response.sendRedirect("/User");
         }
     }
 
@@ -89,11 +108,17 @@ public class UserServlet extends HttpServlet {
         List<User> list = new ArrayList<>();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
+            File file = FileUtil.saveFileUpload("avatar", request.getPart("avatar"));
+            if (file.getName().equals("avatar")) {
+                entity.setAvatar("undraw_profile.svg");
+            } else {
+                entity.setAvatar(file.getName());
+            }
             String encrypted = EncryptUtil.encrypt(request.getParameter("password"));
             entity.setStatus(true);
             entity.setPassword(encrypted);
             this.dao.create(entity);
-            session.setAttribute("message", "Them Moi Thanh Cong");
+            session.setAttribute("message", "Thêm Mới Thành Công");
             list.add(entity);
             request.setAttribute("ds", list);
             List<User> all = this.dao.all();
@@ -101,7 +126,7 @@ public class UserServlet extends HttpServlet {
             response.sendRedirect("/User");
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("error", "Them Moi That Bai");
+            session.setAttribute("error", "Thêm Mới Thất Bại");
         }
 
     }

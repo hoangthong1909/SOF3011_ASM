@@ -2,6 +2,8 @@ package entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "`Order`")
@@ -11,31 +13,43 @@ public class Order {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
     @Column(name = "tongTien", nullable = false)
     private Double tongTien;
 
     @Column(name = "status", nullable = false)
-    private Boolean status = false;
+    private Integer status;
 
     @Column(name = "dateCreate", nullable = false)
-    private LocalDate dateCreate;
+    private Date dateCreate;
 
-    public LocalDate getDateCreate() {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userDatHang;
+
+    @OneToMany(mappedBy = "order")
+    private List<Orderdetail> orderdetails;
+
+    public List<Orderdetail> getOrderdetails() {
+        return orderdetails;
+    }
+
+    public void setOrderdetails(List<Orderdetail> orderdetails) {
+        this.orderdetails = orderdetails;
+    }
+
+    public Date getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(LocalDate dateCreate) {
+    public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -47,12 +61,12 @@ public class Order {
         this.tongTien = tongTien;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUserDatHang() {
+        return userDatHang;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserDatHang(User userDatHang) {
+        this.userDatHang = userDatHang;
     }
 
     public Integer getId() {

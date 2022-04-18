@@ -11,7 +11,7 @@
 </c:if>
 <c:if test="${!empty sessionScope.error}">
     <div class="alert alert-danger">
-        ${sessionScope.error}
+            ${sessionScope.error}
     </div>
     <c:remove var="error" scope="session"/>
 </c:if>
@@ -21,14 +21,10 @@
     </div>
     <c:remove var="message" scope="session"/>
 </c:if>
-<%--<c:if test="${!empty ds}">--%>
-<%--    <p class="alert alert-success">--%>
-<%--        Data OK--%>
-<%--    </p>--%>
 <table class="table table-success table-striped">
     <thead>
     <tr>
-        <%--            <th scope="col">Avatar</th>--%>
+        <th scope="col">Avatar</th>
         <th scope="col">Name</th>
         <th scope="col">Address</th>
         <th scope="col">Phone</th>
@@ -36,13 +32,12 @@
         <th scope="col">Gender</th>
         <th scope="col">Permission</th>
         <th colspan="2">Manipulation</th>
-        <%--            <th scope="col">Custommer</th>--%>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${ds}" var="user">
         <tr>
-                <%--                <td>${user.avatar}</td>--%>
+            <td><img height="50px" src="/images/avatar/${user.avatar}"></td>
             <td>${user.hoTen}</td>
             <td>${user.diaChi}</td>
             <td>${user.sdt}</td>
@@ -57,18 +52,37 @@
             <td>${user.nguoiDung==true ? "Admin" : "User"}</td>
             <td>
                 <form action="edit" method="post">
-                    <input type="hidden" value="${user.id}" name="id" >
+                    <input type="hidden" value="${user.id}" name="id">
                     <button class="btn btn-primary">Update</button>
                 </form>
             </td>
-           <td>
-               <form action="delete" method="post">
-                   <input type="hidden" value="${user.id}" name="id">
-                   <button class="btn btn-danger">Delete</button>
-               </form>
-           </td>
+            <td>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#a${user.id}">Delete</button>
+            </td>
+            <div id="a${user.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn xóa người dùng ${user.hoTen} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="delete" method="post">
+                                <input type="hidden" value="${user.id}" name="id">
+                                <button class="btn btn-danger">Xóa</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<%--</c:if>--%>

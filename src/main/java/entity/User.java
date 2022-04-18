@@ -41,6 +41,17 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Category> categories;
 
+    @OneToMany(mappedBy = "userDatHang")
+    private List<Order> orders;
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     public String getAvatar() {
         return avatar;
     }

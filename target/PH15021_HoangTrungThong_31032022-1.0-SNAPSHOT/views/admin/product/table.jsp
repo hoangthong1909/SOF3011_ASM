@@ -14,33 +14,39 @@
         Vui Lòng Thêm Mới Dữ Liệu
     </p>
 </c:if>
-<%--<c:if test="${!empty list}">--%>
-<%--    <p class="alert alert-success">--%>
-<%--        Data OK 2--%>
-<%--    </p>--%>
+<c:if test="${!empty sessionScope.error}">
+    <div class="alert alert-danger">
+            ${sessionScope.error}
+    </div>
+    <c:remove var="error" scope="session"/>
+</c:if>
+<c:if test="${!empty sessionScope.message}">
+    <div class="alert alert-success">
+            ${sessionScope.message}
+    </div>
+    <c:remove var="message" scope="session"/>
+</c:if>
 <table class="table table-success table-striped">
     <thead>
     <tr>
+        <th scope="col">Image</th>
         <th scope="col">Category</th>
         <th scope="col">ProductName</th>
-        <th scope="col">Quantity</th>
         <th scope="col">Price</th>
         <th scope="col">Color</th>
         <th scope="col">Size</th>
-        <th scope="col">Image</th>
         <th colspan="2">Manipulation</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${list}" var="product">
         <tr>
+            <td><img height="50px" src="/images/products/${product.img}" alt=""></td>
             <td>${product.category.ten}</td>
             <td>${product.ten}</td>
-            <td>${product.soLuong}</td>
             <td>${product.donGia}</td>
             <td>${product.mauSac}</td>
             <td>${product.kichThuoc}</td>
-            <td>${product.img}</td>
             <td>
                 <form action="/editProduct" method="post">
                     <input type="hidden" value="${product.id}" name="id">
@@ -48,14 +54,34 @@
                 </form>
             </td>
             <td>
-                <form action="/deleteProduct" method="post">
-                    <input type="hidden" value="${product.id}" name="id">
-                    <button class="btn btn-danger">Delete</button>
-                </form>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#c${product.id}">Delete</button>
             </td>
+            <div id="c${product.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn xóa sản phẩm ${product.ten} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/deleteProduct" method="post">
+                                <input type="hidden" value="${product.id}" name="id">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<%--</c:if>--%>
+
 

@@ -28,6 +28,8 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         String uri = request.getRequestURI();
         if (uri.contains("Category")) {
             this.create(request, response);
@@ -36,6 +38,8 @@ public class CategoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         String uri = request.getRequestURI();
         if (uri.contains("updateCategory")) {
             this.update(request, response);
@@ -49,8 +53,6 @@ public class CategoryServlet extends HttpServlet {
     }
 
     protected void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<User> dsUser = this.userDao.all();
-        request.setAttribute("dsUser", dsUser);
         List<Category> list = this.dao.all();
         request.setAttribute("list", list);
         request.setAttribute("view", "/views/admin/category/createCategory.jsp");
@@ -59,19 +61,24 @@ public class CategoryServlet extends HttpServlet {
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession();
         String s = request.getParameter("id");
         int id = Integer.parseInt(s);
         try {
             Category entity = this.dao.findByID(id);
             BeanUtils.populate(entity, request.getParameterMap());
             this.dao.update(entity);
+            session.setAttribute("message","Cập Nhật Thành Công");
             response.sendRedirect("/Category");
         } catch (Exception e) {
+            session.setAttribute("error","Cập Nhật Thất Bại");
+            response.sendRedirect("/Category");
             e.printStackTrace();
         }
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session=request.getSession();
         String s = request.getParameter("id");
         int id = Integer.parseInt(s);
         try {
@@ -79,8 +86,11 @@ public class CategoryServlet extends HttpServlet {
             BeanUtils.populate(entity, request.getParameterMap());
             entity.setStatus(false);
             this.dao.update(entity);
+            session.setAttribute("message","Xóa Thành Công");
             response.sendRedirect("/Category");
         } catch (Exception e) {
+            session.setAttribute("error","Xóa Thất Bại");
+            response.sendRedirect("/Category");
             e.printStackTrace();
         }
     }
@@ -99,23 +109,24 @@ public class CategoryServlet extends HttpServlet {
 
     protected void store(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String s = request.getParameter("user_id");
-        int id = Integer.parseInt(s);
         Category entity = new Category();
         List<Category> list = new ArrayList<>();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            User user = this.userDao.findByID(id);
+            User user = (User) session.getAttribute("user");
             entity.setUser(user);
+            entity.setStatus(true);
             entity.setNgayTao(new Date());
             this.dao.create(entity);
-            session.setAttribute("message","Them Moi Thanh Cong");
+            session.setAttribute("message", "Thêm Mới Thành Công");
             list.add(entity);
             request.setAttribute("list", list);
             List<Category> all = this.dao.all();
             request.setAttribute("list", all);
             response.sendRedirect("/Category");
         } catch (Exception e) {
+            session.setAttribute("error", "Thêm Mới Thất Bại");
+            response.sendRedirect("/Category");
             e.printStackTrace();
         }
     }
