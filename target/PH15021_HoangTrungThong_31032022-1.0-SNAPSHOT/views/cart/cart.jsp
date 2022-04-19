@@ -73,9 +73,27 @@
                 <p>Thanh Toán Khi Nhận Hàng</p>
                 <hr>
               <c:if test="${!empty sessionScope.order}">
-                <a class="btn btn-success" href="/order">Đặt Hàng</a>
+                <button class="btn btn-success" data-toggle="modal" data-target="#modalorder">Đặt Hàng</button>
               </c:if>
                 &ensp;&ensp; <a class="btn btn-warning" href="/home">Tiếp Tục Mua Hàng</a>
+            </div>
+            <div id="modalorder" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Xác Nhận Đặt Hàng ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/order" class="btn btn-success">Xác Nhận</a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

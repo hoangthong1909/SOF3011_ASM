@@ -57,7 +57,7 @@ public class OrderServlet extends HttpServlet {
         }else {
             response.sendRedirect("/home");
         }
-        response.sendRedirect("/home");
+        response.sendRedirect("/history");
     }
 
     @Override

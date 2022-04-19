@@ -7,14 +7,16 @@
         <div class="breadcrumbs">
             <ol class="breadcrumb">
                 <li><a href="#">Home</a></li>
-                <li class="active">Shopping Cart</li>
+                <li class="active">History</li>
             </ol>
         </div>
+        <h1>Lịch Sử Đơn Hàng</h1>
             <div class="table-responsive cart_info ">
                 <table class="table table-condensed">
                     <thead>
                     <tr class="cart_menu">
                         <td class="description"><b>STT</b></td>
+                        <td class="description">Mã Đơn Hàng</td>
                         <td class="description">Khách Hàng</td>
                         <td class="description">Điện Thoại</td>
                         <td class="description">Địa Chỉ</td>
@@ -33,6 +35,9 @@
                         <tr>
                             <td class="cart_description">
                               <b> #${status.count}</b>
+                            </td>
+                            <td class="cart_description">
+                                    HD${history.id}
                             </td>
                             <td class="cart_description">
                                     ${history.userDatHang.hoTen}
@@ -61,7 +66,10 @@
                                 </c:choose>
                             </td>
                             <td class="cart_description">
-                                <a href="" class=" btn btn-warning">Xem Chi Tiết</a>
+                                <form action="history" method="post">
+                                    <input type="hidden" value="${history.id}" name="id">
+                                    <button class="btn btn-warning">Xem Chi Tiết</button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>

@@ -8,6 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
         User entity = new User();
         String pass1 = request.getParameter("password");
@@ -39,6 +42,7 @@ public class RegisterServlet extends HttpServlet {
                         String encrypted = EncryptUtil.encrypt(pass1);
                         entity.setPassword(encrypted);
                         entity.setStatus(true);
+                        entity.setAvatar("undraw_profile.svg");
                         entity.setNguoiDung(false);
                         this.userDao.create(entity);
                         session.setAttribute("message2", "Đăng Ký Thành Công");

@@ -46,7 +46,9 @@
                             <li><a href="/home"><i class="fa fa-user"></i>Home</a></li>
                             <li><a href="/cart"><i class="fa fa-shopping-cart"></i><sup style="color: red; font-size: 17px">${sessionScope.soLuong}</sup></a>
                             </li>
+                            <c:if test="${!empty sessionScope.user}">
                             <li><a href="/history"><i class="fa fa-star"></i> History</a></li>
+                            </c:if>
                         </ul>
                     </div>
                 </div>

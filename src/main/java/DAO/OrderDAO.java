@@ -2,7 +2,6 @@ package DAO;
 
 import JPAUtils.Jpautil;
 import entity.Order;
-import entity.Product;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -45,8 +44,8 @@ public class OrderDAO {
         List<Order> list=query.getResultList();
         return list;
     }
-    public Product findByID(int id){
-        Product entity=this.em.find(Product.class,id);
+    public Order findByID(int id){
+        Order entity=this.em.find(Order.class,id);
         return entity;
     }
     public List<Order> findByIDUser(int id){
