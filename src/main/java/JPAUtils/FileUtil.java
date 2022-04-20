@@ -17,9 +17,11 @@ public class FileUtil {
         }
 
         File file = new File(folderUpload, part.getSubmittedFileName());
-        System.out.println(file.getAbsolutePath());
+//        System.out.println(file.getAbsolutePath());
         try {
+            if (file.exists()){
             part.write(file.getAbsolutePath());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

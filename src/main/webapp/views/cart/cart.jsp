@@ -70,9 +70,15 @@
                 <hr>
                 <b>Thành Tiền :&ensp; &ensp; &ensp;&ensp;&ensp;<span style="color: red; font-size: 20px"><fmt:formatNumber value="${tong}" pattern="#,###"/> VND</span></b>
                 <hr>
-                <p>Thanh Toán Khi Nhận Hàng</p>
+                <c:if test="${empty sessionScope.user}">
+                    <a class="btn btn-success" href="/login">Đăng Nhập Để Mua Hàng</a>
+                </c:if>
+                <c:if test="${!empty sessionScope.user}">
+                    <p>Thanh Toán Khi Nhận Hàng</p>
+                </c:if>
+
                 <hr>
-              <c:if test="${!empty sessionScope.order}">
+              <c:if test="${!empty sessionScope.order && !empty sessionScope.user}">
                 <button class="btn btn-success" data-toggle="modal" data-target="#modalorder">Đặt Hàng</button>
               </c:if>
                 &ensp;&ensp; <a class="btn btn-warning" href="/home">Tiếp Tục Mua Hàng</a>

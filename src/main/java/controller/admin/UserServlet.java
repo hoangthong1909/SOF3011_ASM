@@ -13,9 +13,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
 @MultipartConfig
 @WebServlet({"/store", "/edit", "/update", "/delete", "/User"})
 public class UserServlet extends HttpServlet {
+    private static final Logger logger = Logger.getLogger(String.valueOf(UserServlet.class));
     private UserDao dao;
 
     public UserServlet() {
@@ -75,6 +78,7 @@ public class UserServlet extends HttpServlet {
             entity.setNguoiDung(before.getNguoiDung());
             entity.setStatus(before.getStatus());
             this.dao.update(entity);
+            logger.info("Cập Nhật User");
             session.setAttribute("message","Cập Nhật Thành Công");
             response.sendRedirect("/User");
         } catch (Exception e) {
@@ -93,6 +97,7 @@ public class UserServlet extends HttpServlet {
             BeanUtils.populate(entity, request.getParameterMap());
             entity.setStatus(false);
             this.dao.update(entity);
+            logger.info("Xóa User");
             session.setAttribute("message","Xóa Thành Công");
             response.sendRedirect("/User");
         } catch (Exception e) {
@@ -118,6 +123,7 @@ public class UserServlet extends HttpServlet {
             entity.setStatus(true);
             entity.setPassword(encrypted);
             this.dao.create(entity);
+            logger.info("Thêm Mới User");
             session.setAttribute("message", "Thêm Mới Thành Công");
             list.add(entity);
             request.setAttribute("ds", list);

@@ -6,5 +6,5 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<a href="/views/admin/admin.jsp"></a>
-<%  response.sendRedirect("create");%>
+<%--<a href="/views/admin/admin.jsp"></a>--%>
+<%  response.sendRedirect("/login");%>
