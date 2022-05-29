@@ -43,11 +43,18 @@
                 <div class="col-md-8 clearfix">
                     <div class="shop-menu clearfix pull-right">
                         <ul class="nav navbar-nav">
+                            <li class="input-group mt-2">
+                                <form action="search" method="get">
+                                        <input type="text" name="search">
+                                        <button class="btn btn-outline-secondary">Tìm Kiếm</button>
+                                </form>
+                            </li>
                             <li><a href="/home"><i class="fa fa-user"></i>Home</a></li>
-                            <li><a href="/cart"><i class="fa fa-shopping-cart"></i><sup style="color: red; font-size: 17px">${sessionScope.soLuong}</sup></a>
+                            <li><a href="/cart"><i class="fa fa-shopping-cart"></i><sup
+                                    style="color: red; font-size: 17px">${sessionScope.soLuong}</sup></a>
                             </li>
                             <c:if test="${!empty sessionScope.user}">
-                            <li><a href="/history"><i class="fa fa-star"></i> History</a></li>
+                                <li><a href="/history"><i class="fa fa-star"></i> History</a></li>
                             </c:if>
                         </ul>
                     </div>
@@ -93,23 +100,24 @@
                 <div class="col-sm-3 ">
                     <div class="mainmenu pull-right">
                         <c:if test="${!empty sessionScope.user}">
-                        <ul class="nav navbar-nav collapse navbar-collapse">
-                            <li class="dropdown"><a style="color: black;" href="/home">Xin Chào: ${sessionScope.user.hoTen}</a>
-                                <ul role="menu" class="sub-menu">
-                                    <li><a href="/info">Cập Nhật Tài Khoản</a></li>
-                                    <li><a href="/changepassword">Đổi Mật Khẩu</a></li>
-                                    <li><a href="/logout">Đăng Xuất</a></li>
-                                </ul>
-                        </ul>
+                            <ul class="nav navbar-nav collapse navbar-collapse">
+                                <li class="dropdown"><a style="color: black;" href="/home">Xin
+                                    Chào: ${sessionScope.user.hoTen}</a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="/info">Cập Nhật Tài Khoản</a></li>
+                                        <li><a href="/changepassword">Đổi Mật Khẩu</a></li>
+                                        <li><a href="/logout">Đăng Xuất</a></li>
+                                    </ul>
+                            </ul>
                         </c:if>
                         <c:if test="${empty sessionScope.user}">
-                        <ul class="nav navbar-nav collapse navbar-collapse">
-                            <li class="dropdown"><a style="color: black;" href="/home">Tài Khoản</a>
-                                <ul role="menu" class="sub-menu">
-                                    <li><a href="/login">Đăng Nhập</a></li>
-                                    <li><a href="/Register">Đăng Ký</a></li>
-                                </ul>
-                        </ul>
+                            <ul class="nav navbar-nav collapse navbar-collapse">
+                                <li class="dropdown"><a style="color: black;" href="/home">Tài Khoản</a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="/login">Đăng Nhập</a></li>
+                                        <li><a href="/Register">Đăng Ký</a></li>
+                                    </ul>
+                            </ul>
                         </c:if>
                     </div>
                 </div>
@@ -342,12 +350,42 @@
     </div>
 
 </footer><!--/Footer-->
+<script src="https://code.jquery.com/jquery-3.2.1.js" ></script>
+<script type="text/javascript">
+    $(function () {
+        var pageSize = 6; // Hiển thị 6 sản phẩm trên 1 trang
+        showPage = function (page) {
+            $(".contentPage").hide();
+            $(".contentPage").each(function (n) {
+                if (n >= pageSize * (page - 1) && n < pageSize * page)
+                    $(this).show();
+            });
+        }
+        showPage(1);
+        ///** Cần truyền giá trị vào đây **///
+        var totalRows = ${sl}; // Tổng số sản phẩm hiển thị
+        <%--alert(${sl});--%>
+        var btnPage = 5; // Số nút bấm hiển thị di chuyển trang
+        var iTotalPages = Math.ceil(totalRows / pageSize);
 
-<script src="js/jquery.js"></script>
+        var obj = $('#pagination').twbsPagination({
+            totalPages: iTotalPages,
+            visiblePages: btnPage,
+            onPageClick: function (event, page) {
+                console.info(page);
+                showPage(page);
+            }
+        });
+        console.info(obj.data());
+    });
+</script>
+<!-- JS tạo nút bấm di chuyển trang start -->
+<script src="http://1892.yn.lt/blogger/JQuery/Pagging/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<%--<script src="js/jquery.js"></script>--%>
 <script src="js/bootstrap.min1.js"></script>
 <script src="js/jquery.scrollUp.min.js"></script>
 <script src="js/price-range.js"></script>
-<script src="js/jquery.prettyPhoto.js"></script>
+<%--<script src="js/jquery.prettyPhoto.js"></script>--%>
 <script src="js/main.js"></script>
 </body>
 </html>

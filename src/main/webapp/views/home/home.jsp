@@ -25,7 +25,7 @@
                 <div class="features_items"><!--features_items-->
                     <h2 class="title text-center">Danh Mục Sản Phẩm</h2>
                 <c:forEach items="${show}" var="pro">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 contentPage">
                         <div class="product-image-wrapper">
                             <div class="single-products">
                                 <div class="productinfo text-center">
@@ -33,16 +33,18 @@
                                     <hr>
                                     <img src="images/products/${pro.img}" alt="" />
                                     <h3 style="color: red"><fmt:formatNumber value="${pro.donGia}" pattern="#,###"/> VND</h3>
-                                    <p>Size : <span style="color: red">${pro.kichThuoc}</span>
-                                        &ensp;&ensp;   Color : <span style="color: red;">${pro.mauSac}</span>
-                                    </p>
-                                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+<%--                                    <p>Size : <span style="color: red">${pro.kichThuoc}</span>--%>
+<%--                                        &ensp;&ensp;   Color : <span style="color: red;">${pro.mauSac}</span>--%>
+<%--                                    </p>--%>
+                                    <a href="/addtocart?idP=${pro.id}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</a>
+                                    <a href="/detail?id=${pro.id}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Chi Tiết</a>
                                 </div>
                                 <div class="product-overlay">
                                     <div class="overlay-content">
                                         <h3 style="color: red"><fmt:formatNumber value="${pro.donGia}" pattern="#,###"/> VND</h3>
                                         <p>${pro.ten}</p>
-                                        <a href="/addtocart?idP=${pro.id}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <a href="/addtocart?idP=${pro.id}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</a>
+                                        <a href="/detail?id=${pro.id}" class="btn btn-default add-to-cart">Chi Tiết</a>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +54,7 @@
                 </c:forEach>
 
                 </div><!--features_items-->
-
+                <div id="pagination"></div>
 
             </div>
         </div>

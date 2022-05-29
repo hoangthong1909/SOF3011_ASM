@@ -24,6 +24,8 @@ public class HistoryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         HttpSession session=request.getSession();
         User user= (User) session.getAttribute("user");
         if (user!=null){
@@ -38,6 +40,8 @@ public class HistoryServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         int id= Integer.parseInt(request.getParameter("id"));
         List<Orderdetail> orderdetailList=this.orderDetailDAO.findByIDOrder(id);
         request.setAttribute("list",orderdetailList);

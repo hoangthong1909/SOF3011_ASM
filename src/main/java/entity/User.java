@@ -33,7 +33,7 @@ public class User {
     private Boolean nguoiDung;
 
     @Column(name = "status", nullable = false)
-    private Boolean status;
+    private Integer status;
 
     @Column(name = "avatar")
     private String avatar;
@@ -132,11 +132,11 @@ public class User {
         this.nguoiDung = nguoiDung;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

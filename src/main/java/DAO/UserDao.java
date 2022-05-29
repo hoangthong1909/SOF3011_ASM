@@ -43,7 +43,7 @@ public class UserDao {
 
 
     public List<User> all() {
-        String jpql = "SELECT obj FROM User obj where obj.status=true";
+        String jpql = "SELECT obj FROM User obj where obj.status=1 OR obj.status=2";
         TypedQuery<User> query = this.em.createQuery(jpql, User.class);
         List<User> ds = query.getResultList();
         return ds;

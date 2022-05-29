@@ -67,7 +67,7 @@
                 </c:choose>
             </td>
             <td>
-                <form action="show" method="post">
+                <form action="showOrder" method="post">
                     <input type="hidden" value="${order.id}" name="id">
                     <button class="btn btn-warning">Xem Chi Tiết</button>
                 </form>

@@ -11,7 +11,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/OrderManager","/cancel","/confirm"})
+@WebServlet({"/OrderManager","/cancel","/confirm","/showOrder"})
 public class OrderManagerServlet extends HttpServlet {
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
@@ -40,7 +40,7 @@ public class OrderManagerServlet extends HttpServlet {
           }
       }else if (uri.contains("cancel")){
           this.cancel(request,response);
-      }else if (uri.contains("show")){
+      }else if (uri.contains("showOrder")){
           this.show(request,response);
       }
     }

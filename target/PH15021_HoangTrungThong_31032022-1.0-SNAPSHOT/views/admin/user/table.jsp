@@ -31,7 +31,7 @@
         <th scope="col">Email</th>
         <th scope="col">Gender</th>
         <th scope="col">Permission</th>
-        <th colspan="2">Manipulation</th>
+        <th colspan="3"></th>
     </tr>
     </thead>
     <tbody>
@@ -59,6 +59,16 @@
             <td>
                 <button class="btn btn-danger" data-toggle="modal" data-target="#a${user.id}">Delete</button>
             </td>
+            <c:if test="${user.status==1 }">
+                <td>
+                    <button class="btn btn-secondary" data-toggle="modal" data-target="#aaa${user.id}">Khóa</button>
+                </td>
+            </c:if>
+            <c:if test="${user.status==2 }">
+                <td>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#bbb${user.id}">Mở Khóa</button>
+                </td>
+            </c:if>
             <div id="a${user.id}" class="modal" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -82,6 +92,54 @@
                     </div>
                 </div>
             </div>
+            <div id="aaa${user.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn khóa người dùng ${user.hoTen} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/khoa" method="post">
+                                <input type="hidden" value="${user.id}" name="id">
+                                <button class="btn btn-primary">Khóa</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bbb${user.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn mở khóa người dùng ${user.hoTen} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/unlock" method="post">
+                                <input type="hidden" value="${user.id}" name="id">
+                                <button class="btn btn-primary">Mở Khóa</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </tr>
     </c:forEach>
     </tbody>

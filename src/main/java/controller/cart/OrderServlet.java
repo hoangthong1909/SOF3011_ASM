@@ -2,14 +2,18 @@ package controller.cart;
 
 import DAO.OrderDAO;
 import DAO.OrderDetailDAO;
+import DAO.UserDao;
+import JPAUtils.EncryptUtil;
 import entity.Order;
 import entity.Orderdetail;
 import entity.User;
+import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
@@ -17,14 +21,18 @@ import java.util.List;
 public class OrderServlet extends HttpServlet {
     private OrderDAO orderDAO;
     private OrderDetailDAO orderDetailDAO;
+    private UserDao userDao;
 
     public OrderServlet() {
         this.orderDAO = new OrderDAO();
         this.orderDetailDAO = new OrderDetailDAO();
+        this.userDao = new UserDao();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
         HttpSession session = request.getSession();
         Order orderSession = (Order) session.getAttribute("order");
         if (orderSession != null) {
@@ -54,14 +62,9 @@ public class OrderServlet extends HttpServlet {
                 e.printStackTrace();
             }
             session.removeAttribute("order");
-        }else {
+        } else {
             response.sendRedirect("/home");
         }
         response.sendRedirect("/history");
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

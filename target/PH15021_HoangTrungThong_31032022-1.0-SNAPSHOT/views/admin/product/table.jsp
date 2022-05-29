@@ -35,7 +35,7 @@
         <th scope="col">Price</th>
         <th scope="col">Color</th>
         <th scope="col">Size</th>
-        <th colspan="2">Manipulation</th>
+        <th colspan="3"></th>
     </tr>
     </thead>
     <tbody>
@@ -44,7 +44,7 @@
             <td><img height="50px" src="/images/products/${product.img}" alt=""></td>
             <td>${product.category.ten}</td>
             <td>${product.ten}</td>
-            <td>${product.donGia}</td>
+            <td><fmt:formatNumber value="${product.donGia}" pattern="#,###"/> VND</td>
             <td>${product.mauSac}</td>
             <td>${product.kichThuoc}</td>
             <td>
@@ -56,6 +56,16 @@
             <td>
                 <button class="btn btn-danger" data-toggle="modal" data-target="#c${product.id}">Delete</button>
             </td>
+            <c:if test="${product.status==1 }">
+                <td>
+                    <button class="btn btn-secondary" data-toggle="modal" data-target="#ccc${product.id}">Ẩn</button>
+                </td>
+            </c:if>
+            <c:if test="${product.status==2 }">
+                <td>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#ddd${product.id}">Mở </button>
+                </td>
+            </c:if>
             <div id="c${product.id}" class="modal" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -71,6 +81,52 @@
                             <form action="/deleteProduct" method="post">
                                 <input type="hidden" value="${product.id}" name="id">
                                 <button class="btn btn-danger">Delete</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ccc${product.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn ẩn  ${product.ten} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/Hidden" method="post">
+                                <input type="hidden" value="${product.id}" name="id">
+                                <button class="btn btn-primary">Ẩn</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ddd${product.id}" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Xác nhận</h3>
+                            <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Bạn muốn mở ${product.ten} ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="/Open" method="post">
+                                <input type="hidden" value="${product.id}" name="id">
+                                <button class="btn btn-primary">Mở</button>
                             </form>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                     aria-label="Close">Hủy

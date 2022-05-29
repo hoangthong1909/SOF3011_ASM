@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter(urlPatterns = {"/User", "/Category", "/Product", "/OrderManager", "/storeCategory", "/updateCategory", "/deleteCategory", "/editCategory", "/store", "/edit", "/update", "/delete", "/storeProduct", "/updateProduct", "/deleteProduct", "/editProduct", "/cancel", "/confirm"})
+@WebFilter(urlPatterns = {"/User", "/Category", "/Product", "/OrderManager", "/storeCategory", "/updateCategory", "/deleteCategory", "/editCategory", "/store", "/edit", "/update", "/delete", "/storeProduct", "/updateProduct", "/deleteProduct", "/editProduct", "/cancel", "/confirm","/showOrder"})
 public class AuthenticationFilter implements Filter {
 
     public AuthenticationFilter() {

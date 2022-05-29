@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/addtocart")
+@WebServlet({"/addtocart", "/up", "/down"})
 public class AddToCartServlet extends HttpServlet {
     private ProductDAO productDAO;
 
@@ -22,6 +22,57 @@ public class AddToCartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String uri = request.getRequestURI();
+        if (uri.contains("up")) {
+            this.up(request, response);
+        } else if (uri.contains("addtocart")) {
+            this.addtocart(request, response);
+        } else if (uri.contains("down")) {
+            this.down(request, response);
+        }
+    }
+
+    protected void up(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int id = Integer.parseInt(request.getParameter("id"));
+        Order order = (Order) session.getAttribute("order");
+        List<Orderdetail> listOrder = order.getOrderdetails();
+        for (Orderdetail item : listOrder) {
+            if (item.getProduct().getId() == id) {
+                item.setSoLuong(item.getSoLuong() + 1);
+            }
+        }
+        response.sendRedirect("/cart");
+    }
+
+    protected void down(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int id = Integer.parseInt(request.getParameter("id"));
+        Order order = (Order) session.getAttribute("order");
+        List<Orderdetail> listOrder = order.getOrderdetails();
+        int test = 0;
+        Orderdetail orderdetail = new Orderdetail();
+        if (listOrder.size() > 0) {
+            for (Orderdetail item : listOrder) {
+                if (item.getProduct().getId() == id) {
+                    item.setSoLuong(item.getSoLuong() - 1);
+                    if (item.getSoLuong() == 0) {
+                        orderdetail = item;
+                        test++;
+                    }
+                }
+            }
+            if (test != 0) {
+                listOrder.remove(orderdetail);
+                if (listOrder.isEmpty()) {
+                    session.removeAttribute("order");
+                }
+            }
+        }
+        response.sendRedirect("/cart");
+    }
+
+    protected void addtocart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int quantity = 1;
         int idProduct = Integer.parseInt(request.getParameter("idP"));
         Product product = this.productDAO.findByID(idProduct);
@@ -64,9 +115,5 @@ public class AddToCartServlet extends HttpServlet {
         } else {
             response.sendRedirect("/cart");
         }
-    }
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

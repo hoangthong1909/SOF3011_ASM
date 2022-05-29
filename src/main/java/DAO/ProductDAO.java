@@ -43,7 +43,13 @@ public class ProductDAO {
     }
 
     public List<Product> all(){
-        String jpql="SELECT obj from Product obj where obj.status=true";
+        String jpql="SELECT obj from Product obj where obj.status=1 or obj.status=2 ";
+        TypedQuery<Product> query =this.em.createQuery(jpql,Product.class);
+        List<Product> list=query.getResultList();
+        return list;
+    }
+    public List<Product> getAll(){
+        String jpql="SELECT obj from Product obj where obj.status=1 ";
         TypedQuery<Product> query =this.em.createQuery(jpql,Product.class);
         List<Product> list=query.getResultList();
         return list;
@@ -52,8 +58,16 @@ public class ProductDAO {
         Product entity=this.em.find(Product.class,id);
         return entity;
     }
+    public List<Product> findByName(String name) {
+        String jpql = "SELECT obj FROM Product obj " + "WHERE obj.ten like :name and obj.status=1";
+        TypedQuery<Product> query = this.em.createQuery(jpql, Product.class);
+        query.setParameter("name", "%"+name+"%");
+        List<Product> result = query.getResultList();
+        return result;
+    }
+
     public List<Product> findByIDCategory(int id){
-        String jpql="SELECT obj from Product obj where obj.category.id= :id AND obj.status=true ";
+        String jpql="SELECT obj from Product obj where obj.category.id= :id AND obj.status=1";
         TypedQuery<Product> query =this.em.createQuery(jpql,Product.class);
         query.setParameter("id",id);
         List<Product> list=query.getResultList();

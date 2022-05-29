@@ -30,7 +30,7 @@
     </div>
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Price</label>
-        <input type="text" class="form-control" name="donGia">
+        <input type="text" min="0" class="form-control" name="donGia">
     </div>
     <div class="mb-3 col-6">
         <label class="form-label fw-bold">Color</label>

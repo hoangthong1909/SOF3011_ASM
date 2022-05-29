@@ -41,7 +41,7 @@ public class RegisterServlet extends HttpServlet {
                         BeanUtils.populate(entity, request.getParameterMap());
                         String encrypted = EncryptUtil.encrypt(pass1);
                         entity.setPassword(encrypted);
-                        entity.setStatus(true);
+                        entity.setStatus(1);
                         entity.setAvatar("undraw_profile.svg");
                         entity.setNguoiDung(false);
                         this.userDao.create(entity);

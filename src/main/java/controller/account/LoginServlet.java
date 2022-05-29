@@ -42,10 +42,18 @@ public class LoginServlet extends HttpServlet {
             boolean check = EncryptUtil.check(pwd, user.getPassword());
             if (check == true) {
                 // Đăng nhập thành công
-                if (user.getNguoiDung() == true) {
-                    response.sendRedirect("/User");
-                } else {
-                    response.sendRedirect("/home");
+                if (user.getStatus()==2){
+                    session.setAttribute("error", "Tài Khoản Này Đã Bị Khóa");
+                    response.sendRedirect("/login");
+                }else if (user.getStatus()==0){
+                    session.setAttribute("error", "Tài Khoản Này Đã Bị Xóa");
+                    response.sendRedirect("/login");
+                }else {
+                    if (user.getNguoiDung() == true) {
+                        response.sendRedirect("/User");
+                    } else {
+                        response.sendRedirect("/home");
+                    }
                 }
                 session.setAttribute("user", user);
             } else {

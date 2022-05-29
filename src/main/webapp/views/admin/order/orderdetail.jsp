@@ -34,13 +34,13 @@
     <c:forEach items="${list}" var="orderdetail" varStatus="status">
         <tr>
             <td>#${status.count}</td>
-            <td><img height="50px" src="/images/products/${list.product.img}" alt=""></td>
-            <td>${list.product.ten}</td>
-            <td>${list.product.kichThuoc}</td>
-            <td>${list.product.mauSac}</td>
-            <td>${list.donGia}</td>
-            <td>${list.soLuong}</td>
-            <td>${list.donGia*list.soLuong}</td>
+            <td><img height="50px" src="/images/products/${orderdetail.product.img}" alt=""></td>
+            <td>${orderdetail.product.ten}</td>
+            <td>${orderdetail.product.kichThuoc}</td>
+            <td>${orderdetail.product.mauSac}</td>
+            <td><fmt:formatNumber value="${orderdetail.donGia}" pattern="#,###"/> VND</td>
+            <td>${orderdetail.soLuong}</td>
+            <td><span style="color: red"><fmt:formatNumber value="${orderdetail.donGia*orderdetail.soLuong}" pattern="#,###"/> VND</span></td>
         </tr>
     </c:forEach>
     </tbody>

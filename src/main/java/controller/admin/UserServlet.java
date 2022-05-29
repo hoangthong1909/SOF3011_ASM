@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @MultipartConfig
-@WebServlet({"/store", "/edit", "/update", "/delete", "/User"})
+@WebServlet({"/store", "/edit", "/update", "/delete", "/User", "/khoa", "/unlock"})
 public class UserServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(String.valueOf(UserServlet.class));
     private UserDao dao;
@@ -48,6 +48,10 @@ public class UserServlet extends HttpServlet {
             this.edit(request, response);
         } else if (uri.contains("delete")) {
             this.delete(request, response);
+        } else if (uri.contains("khoa")) {
+            this.Lock(request, response);
+        } else if (uri.contains("unlock")) {
+            this.UnLock(request, response);
         }
     }
 
@@ -66,43 +70,46 @@ public class UserServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(s);
             User before = this.dao.findByID(id);
-            User entity = new User();
-            BeanUtils.populate(entity, request.getParameterMap());
-            File file = FileUtil.saveFileUpload("avatar", request.getPart("avatar"));
-            if (file.getName().equals("avatar")) {
-                entity.setAvatar(before.getAvatar());
+            BeanUtils.populate(before, request.getParameterMap());
+            File file = FileUtil.saveFileUpload(request.getServletContext().getRealPath("/images/avatar"), request.getPart("avatar"));
+            if (file.getName().equals("/images/avatar")) {
+                before.setAvatar(before.getAvatar());
             } else {
-                entity.setAvatar(file.getName());
+                before.setAvatar(file.getName());
             }
-            entity.setPassword(before.getPassword());
-            entity.setNguoiDung(before.getNguoiDung());
-            entity.setStatus(before.getStatus());
-            this.dao.update(entity);
+            this.dao.update(before);
             logger.info("Cập Nhật User");
-            session.setAttribute("message","Cập Nhật Thành Công");
+            session.setAttribute("message", "Cập Nhật Thành Công");
             response.sendRedirect("/User");
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("error","Cập Nhật Thất Bại");
+            session.setAttribute("error", "Cập Nhật Thất Bại");
             response.sendRedirect("/User");
         }
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
         String s = request.getParameter("id");
         try {
             int id = Integer.parseInt(s);
             User entity = this.dao.findByID(id);
-            BeanUtils.populate(entity, request.getParameterMap());
-            entity.setStatus(false);
-            this.dao.update(entity);
-            logger.info("Xóa User");
-            session.setAttribute("message","Xóa Thành Công");
-            response.sendRedirect("/User");
+            if (entity.getId() == user.getId()) {
+                session.setAttribute("message", "Bạn Không Thể Xóa Chính Mình");
+                response.sendRedirect("/User");
+                return;
+            } else {
+                BeanUtils.populate(entity, request.getParameterMap());
+                entity.setStatus(0);
+                this.dao.update(entity);
+                logger.info("Xóa User");
+                session.setAttribute("message", "Xóa Thành Công");
+                response.sendRedirect("/User");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            session.setAttribute("error","Xóa Thất Bại");
+            session.setAttribute("error", "Xóa Thất Bại");
             response.sendRedirect("/User");
         }
     }
@@ -113,14 +120,14 @@ public class UserServlet extends HttpServlet {
         List<User> list = new ArrayList<>();
         try {
             BeanUtils.populate(entity, request.getParameterMap());
-            File file = FileUtil.saveFileUpload("avatar", request.getPart("avatar"));
-            if (file.getName().equals("avatar")) {
+            File file = FileUtil.saveFileUpload(request.getServletContext().getRealPath("/images/avatar"), request.getPart("avatar"));
+            if (file.getName().equals("/images/avatar")) {
                 entity.setAvatar("undraw_profile.svg");
             } else {
                 entity.setAvatar(file.getName());
             }
             String encrypted = EncryptUtil.encrypt(request.getParameter("password"));
-            entity.setStatus(true);
+            entity.setStatus(1);
             entity.setPassword(encrypted);
             this.dao.create(entity);
             logger.info("Thêm Mới User");
@@ -148,5 +155,46 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("view1", "/views/admin/user/table.jsp");
         request.getRequestDispatcher("views/admin/admin.jsp").forward(request, response);
 
+    }
+
+    protected void Lock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        String s = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(s);
+            User entity = this.dao.findByID(id);
+            if (entity.getId() == user.getId()) {
+                session.setAttribute("error", "Bạn Không Thể Khóa Chính Mình");
+                response.sendRedirect("/User");
+                return;
+            }else {
+            entity.setStatus(2);
+            this.dao.update(entity);
+            session.setAttribute("error", "Khóa Tài Khoản Thành Công");
+            response.sendRedirect("/User");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("error", "Khóa Tài Khoản Thất Bại");
+            response.sendRedirect("/User");
+        }
+    }
+
+    protected void UnLock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String s = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(s);
+            User entity = this.dao.findByID(id);
+            entity.setStatus(1);
+            this.dao.update(entity);
+            session.setAttribute("message", "Mở Khóa Tài Khoản Thành Công");
+            response.sendRedirect("/User");
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.setAttribute("error", "Mở Khóa Tài Khoản Thất Bại");
+            response.sendRedirect("/User");
+        }
     }
 }
